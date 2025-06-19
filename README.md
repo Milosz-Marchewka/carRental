@@ -1,410 +1,496 @@
-										                # Salon Samochodowy - projekt szkolny
-                    ### DISCLAIMER: To jest projekt szkolny. Został stworzony w 2-3 dni, czas pracy
-                    ### około 5h. Zapewne nie wszystko co znajduje się w tym projekcie jest zrobione
-                    ### z najlepszymi praktykami, optymalnie lub przystępnie. Celem było stworzenie projektu
-                    ### opierającego się o OOP, obsługę plików i wyjątków oraz podstawowe CLI.
+# Salon Samochodowy - projekt szkolny
 
-											Program jest salonem samochodowym.
-											Przechowuje on wszystkie zmiany w pliku cars.txt
+### DISCLAIMER: To jest projekt szkolny. Został stworzony w 2-3 dni, czas pracy
+### około 5h. Zapewne nie wszystko co znajduje się w tym projekcie jest zrobione
+### z najlepszymi praktykami, optymalnie lub przystępnie. Celem było stworzenie projektu
+### opierającego się o OOP, obsługę plików i wyjątków oraz podstawowe CLI.
 
-											Daje możliwość:
-											- wyświetlenia wszystkich pojazdów
-											- dodania pojazdu
-											- usunięcia pojazdu
-											- wypożyczenia pojazdu
-											- zwrotu pojazdu
+Program jest salonem samochodowym.
+Przechowuje on wszystkie zmiany w pliku cars.txt
+Sam program działa po Polsku, tyle że kod jest napisany
+w języku angielskim.
 
-											# Struktura plików
-											- main.cpp - zbiór wszystkiego, działanie programu
-											- dealership.cpp/.h - logika związana z obsługą wielu pojazdów
-											- car.cpp/.h - logika związana z obsługą pojedynczego pojazdu
-											- condition.cpp/.h - stan pojazdu
-											- fuelType.cpp/.h - rodzaj napędu/paliwa
-											- transmission.cpp/.h - rodzaj skrzyni biegów
-											- utils.cpp/.h - funkcje pomocnicze
+# Daje możliwość:
+- wyświetlenia wszystkich pojazdów
+- dodania pojazdu
+- usunięcia pojazdu
+- wypożyczenia pojazdu
+- zwrotu pojazdu
 
-											> Uruchomienie
+# Struktura plików
+- main.cpp - zbiór wszystkiego, działanie programu
+- dealership.cpp/.h - logika związana z obsługą wielu pojazdów
+- car.cpp/.h - logika związana z obsługą pojedynczego pojazdu
+- condition.cpp/.h - stan pojazdu
+- fuelType.cpp/.h - rodzaj napędu/paliwa
+- transmission.cpp/.h - rodzaj skrzyni biegów
+- utils.cpp/.h - funkcje pomocnicze
+
+# Uruchomienie
 											
-											Najłatwiej uruchomić projekt w Codeblocksie, Open Pro-
-											ject>Zaznaczyć plik cbp. Jeżeli inne pliki .cpp nie ko-
-											mpilują się, trzeba na nich nacisnąć PPM>Properties>
-											Build i zaznaczyć build i debug.
+Projekt jest oryginalnie stworzony w Code::Blocks. 
+Jednakże, nie załączam tutaj plików .cbp itp.
+Zalecane jest otworzenie w VS22 lub VSCode (g++)
 
+----------------------------------------------------------
+# Pseudo-dokumentacja
 
-						----------------------------------------------------------
-													Pseudo-dokumentacja
+## KLASY
 
+## Plik car.h/.cpp
+Plik, który zawiera klasę Car, przechowującą dane i metody powiązane z pojedynczym pojazdem. Posiada metody nadpisujące plik z danymi cars.txt.
 
-														    KLASY
+## `Klasa Car`
 
+### Metody prywatne:
+- `string licensePlate` – tablica rejestracyjna, zainicjowana na `""`
+- `string brand` – marka pojazdu, zainicjowana na `""`
+- `string model` – model pojazdu, zainicjowana na `""`
+- `Date prodDate` – data produkcji, zainicjowana na `0,0,0`
+- `string color` – kolor pojazdu, zainicjowana na `""`
+- `bool isAvailable` – dostępność pojazdu, zainicjowana na `false`
+- `int mileage` – przebieg pojazdu, zainicjowany na `0`
+- `FuelType fuelType` – rodzaj napędu/paliwa, zainicjowany na `Benzyna`
+- `Transmission transmission` – rodzaj skrzyni biegów, zainicjowany na `Manualna`
+- `Condition condition` – stan pojazdu, zainicjowany na `Nowy`
 
+---
 
-													Plik car.h/.cpp
+### Metody publiczne:
 
+#### Konstruktory:
+- `Car(string, string, string, Date, string, bool, int, FuelType, Transmission, Condition)`
+- `Car(string, string, string, int, int, int, string, bool, int, string, string, string)`  
+  Korzysta z poprzedniego konstruktora, łączy argumenty za pomocą konstruktora `Date()` i funkcji `stringToX()` z plików `enum`.
+
+---
 
-	
-	Plik, który zawiera klasę Car, przechowującą dane i metody powiązane z pojedynczym pojazdem. Posiada metody nadpisujące plik z danymi cars.txt.
+### Gettery:
+- `string getLicensePlate() const`
+- `string getBrand() const`
+- `string getModel() const`
+- `Date getProductionDate() const`
+- `string getColor() const`
+- `bool getAvailable() const`
+- `int getMileage() const`
+- `FuelType getFuelType() const`
+- `Transmission getTransmission() const`
+- `Condition getCondition() const`
 
-	> class Car
-		private:
-		- string licensePlate (tablica rejestracyjna), zainicjowane na ""
-		- string brand (marka pojazdu), zainicjowane na ""
-		- string model (model pojazdu), zainicjowane na ""
-		- Date prodDate (data produkcji), zainicjowane na 0,0,0
-		- string color (kolor pojazdu), zainicjowane na ""
-		- bool isAvailable (dostępność pojazdu), zainicjowane na false
-		- int mileage (przebieg pojazdu), zainicjowane na 0
-		- FuelType fuelType (rodzaj napędu/paliwa pojazdu), zainicjowane na Benzyna
-		- Transmission transmission (rodzaj skrzyni biegów pojazdu), zainicjowane na Manualna
-		- Condition condition (stan pojazdu), zainicjowane na Nowy
-		
-		public:
-		- Car(string, string, string, Date, string, bool, int, FuelType, Transmission, Condition)
+---
+
+### Settery:
+- `void setLicensePlate(string)` – z walidacją: `licensePlateCheck()` z `utils.h`
+- `void setBrand(string)`
+- `void setModel(string)`
+- `void setProductionDate(Date)` – waliduje datę z dzisiejszą
+- `void setColor(string)`
+- `void setAvailability(bool)`
+- `void setMileage(int)` – walidacja: `< 0` lub `> 1_000_000`
+- `void setFuelType(FuelType)`
+- `void setTransmission(Transmission)`
+- `void setCondition(Condition)`
+
+---
+
+### Inne metody:
+- `string getFileFormat() const`  
+  Zwraca dane w formacie do zapisu do `cars.txt`:  
+  `TablicaRejestracyjna;Marka;Model;DataProdukcji;Kolor;Dostępność;Przebieg;RodzajNapędu;SkrzyniaBiegów;Stan`
+
+- `static Car fromFileString(const string&)` – konwertuje string z pliku na obiekt `Car`
+
+- `void setCar(...)` – ustawia wszystkie pola klasy
+
+- `void show()` – pokazuje wszystkie dane pojazdu
+
+- `void smallShow()` – pokazuje tylko markę, model, tablicę rejestracyjną oraz dostępność
+
+- `void write()` – pozwala na wpisywanie wartości z klawiatury przy pomocy `std::cin` i setterów.  
+  Obsługuje wyjątki przy błędnych danych. W razie błędu wraca na początek metody, a nie do głównego menu.
+
+- `void edit(Car&)` – używa `std::getline` i setterów do edycji danych przekazanego obiektu.  
+  Waliduje dane, działa jak `write()`. Użytkownik może pominąć dane, naciskając `Enter`.
+
+---
+
+## Plik dealership.h/.cpp
+Plik, który zawiera klasę Dealership, przechowującą vector pojazdów oraz nazwę pliku, do którego zapisują się dane.
+
+## `Klasa Dealership`
+
+### Pola prywatne:
+- `vector<Car> cars`
+- `const string filename = "cars.txt"`
+
+---
+
+### Metody publiczne:
+
+#### Constructors:
+- `Dealership(vector<Car>)`  
+  Konstruktor podmieniający vector klasy z argumentem.
+- `Dealership(Car)`  
+  Konstruktor dodający (`push_back`) argument do vectora klasy.
+
+---
+
+#### Metody wyświetlające:
+- `void displayCars()`  
+  Pokazuje wszystkie pojazdy z vectora klasy. Jeżeli nie ma żadnych pojazdów, powiadamia użytkownika. Sortuje auta po dostępności.
+- `void sortedDisplayCars()`  
+  Pokazuje wszystkie pojazdy wraz z indeksami. Wyświetla tylko markę, model, tablicę rejestracyjną oraz dostępność pojazdu. Sortuje auta po dostępności.
+- `void reverseDisplayCars()`  
+  Pokazuje wszystkie pojazdy wraz z indeksami. Wyświetla tylko markę, model, tablicę rejestracyjną oraz dostępność pojazdu. Sortuje auta od niedostępnych do dostępnych.
+
+---
+
+#### Dodawanie pojazdów:
+- `void addCar(const Car&)`  
+  Dodaje auto do vectora klasy (`push_back`).
+- `void addCar()`  
+  Tworzy obiekt `Car`, wywołuje metodę `write()` (pozwala na wpisanie danych auta), a następnie dodaje go do vectora (poprzez powyższą metodę).
+
+---
+
+#### Usuwanie pojazdów:
+- `void removeCar(Car&)`  
+  Sprawdza w pętli, czy `getFileFormat()` argumentu zgadza się z obiektem w vectorze. Jeśli tak, usuwa go za pomocą `erase(index)`.  
+  **Dlaczego `getFileFormat()`?**  
+  Ponieważ zawiera najwięcej unikatowych informacji o pojeździe w formacie string oddzielonym średnikami.
+- `void removeCar()`  
+  Wyświetla auta (`sortedDisplayCars()`), prosi użytkownika o indeks pojazdu do usunięcia.  
+  Jeśli indeks jest niepoprawny lub nie jest liczbą, rzuca wyjątek.  
+  Poprawny indeks wywołuje `removeCar(Car&)` z odpowiednim obiektem.
+
+---
+
+#### Edytowanie pojazdów:
+- `void editCar()`  
+  Wyświetla auta (`sortedDisplayCars()`), prosi użytkownika o indeks pojazdu do edycji.  
+  Jeśli indeks jest niepoprawny lub nie jest liczbą, rzuca wyjątek.  
+  Poprawny indeks wywołuje `Car::edit(Car&)` na wybranym obiekcie.
+
+---
+
+#### Wypożyczanie pojazdów:
+- `void rentCar(Car&)`  
+  Jeżeli pojazd jest dostępny (`getAvailable() == true`), zmienia dostępność na `false`.  
+  Jeśli pojazd jest niedostępny, rzuca wyjątek.
+- `void rentCar()`  
+  Wyświetla auta (`sortedDisplayCars()`), prosi użytkownika o indeks pojazdu do wypożyczenia.  
+  Jeśli indeks jest niepoprawny lub nie jest liczbą, rzuca wyjątek.  
+  Poprawny indeks wywołuje `rentCar(Car&)` na wybranym obiekcie.
+
+---
+
+#### Zwracanie pojazdów:
+- `void returnCar(Car&)`  
+  Jeżeli pojazd nie jest dostępny (`getAvailable() == false`), zmienia dostępność na `true`.  
+  Jeśli pojazd jest już dostępny, rzuca wyjątek.
+- `void returnCar()`  
+  Wyświetla auta (`sortedDisplayCars()`), prosi użytkownika o indeks pojazdu do zwrotu.  
+  Jeśli indeks jest niepoprawny lub nie jest liczbą, rzuca wyjątek.  
+  Poprawny indeks wywołuje `returnCar(Car&)` na wybranym obiekcie.
+
+---
+
+#### Sortowanie:
+- `void sortCars()`  
+  Sortuje pojazdy w vectorze od dostępnych do niedostępnych.  
+  Używa `std::sort()` z funkcją lambda:  
+  ```cpp
+  [](const Car& a, const Car& b) { return a.getAvailable() > b.getAvailable(); }
+
+#### File operations:
+- `void fetchFromFile()`  
+  Używa `ifstream` z biblioteki `<fstream>`.  
+  Czyta plik linia po linii, a jeśli linia nie jest pusta, tworzy obiekt `Car` za pomocą statycznej metody:  
+  ```cpp
+  Car::fromFileString(string)
+
+- `void saveToFile()`  
+  Używa `ofstream` z biblioteki `<fstream>`.  
+  Iteruje po vectorze `cars` i dla każdego obiektu wywołuje metodę `getFileFormat()`.  
+  Zwrócone linie zapisuje do pliku `cars.txt`.
+
+## Plik date.h/.cpp
+Plik z klasą Date, która przechowuje rok, miesiąc oraz dzień. Posiada gettery i settery do poszczególnych
+pól, jak i metodą zwracającą pełną datę oraz metodą statyczną, która zwraca obiekt o dacie dzisiejszej.
+
+## `Klasa Date`
+
+### Pola prywatne:
+- `int year = 0`
+- `int month = 0`
+- `int day = 0`
+
+---
+
+### Metody publiczne:
+
+#### Konstruktor:
+- `Date(int year, int month, int day)`  
+  Konstruktor ustawiający wartości daty.
 
-		- Car(string, string, string, int, int, int, string, bool, int, string, string, string) - konstruktor, tyle że z typami prymitywnymi zamiast enum/class.
-			korzysta z poprzedniego konstruktora, wiąże argumenty za pomocą konstruktora Date() i funkcji stringToX() z plików enum.
+---
+
+#### Gettery:
+- `int getYear() const`  
+  Zwraca rok.
+- `int getMonth() const`  
+  Zwraca miesiąc.
+- `string getMonthFormatted()`  
+  Zwraca miesiąc jako string w formacie dwucyfrowym, np. `"05"` dla maja.  
+  Wykorzystuje `<ostringstream>` do dopełnienia zera i ustawienia szerokości na 2.
+- `int getDay() const`  
+  Zwraca dzień.
+- `string getDayFormatted()`  
+  Zwraca dzień jako string w formacie dwucyfrowym, np. `"01"`.  
+  Wykorzystuje `<ostringstream>` do dopełnienia zera i ustawienia szerokości na 2.
+- `string getDate() const`  
+  Zwraca datę w formacie `"dd.mm.yyyy"`.
 
-		Gettery
+---
 
-		- string getLicensePlate() const - zwraca tablicę rejestracyjną pojazdu
+#### Statyczne metody związane z datą systemową (wymagają `<windows.h>`):
+- `static Date today()`  
+  Zwraca obiekt `Date` z aktualną datą systemową.
+- `static int currentYear()`  
+  Zwraca bieżący rok.
+- `static int currentMonth()`  
+  Zwraca bieżący miesiąc.
+- `static int currentDay()`  
+  Zwraca bieżący dzień.
 
-		- string getBrand() const - zwraca markę pojazdu
+---
 
-		- string getModel() const - zwraca model pojazdu
+#### Settery:
+- `void setYear(int)`  
+  Ustawia rok.
+- `void setMonth(int)`  
+  Ustawia miesiąc.
+- `void setDay(int)`  
+  Ustawia dzień.
+- `void setDate(int, int, int)`  
+  Ustawia rok, miesiąc i dzień jednocześnie.
 
-		- Date getProductionDate() const - zwraca datę produkcji pojazdu
+---
 
-		- string getColor() const - zwraca kolor pojazdu
+#### Walidacja:
+- `static void validateDate(Date)`  
+  Waliduje datę względem aktualnej daty systemowej oraz pod względem wartości liczbowych (np. miesiąc < 1 lub > 12, dzień < 1 lub > 31 itp.).
+- `static void validateDate(int year, int month, int day)`  
+  Ta wersja przyjmuje wartości jako int i jest używana m.in. w konstruktorze, aby uniknąć rekurencji (stack overflow).  
+  Zapobiega to sytuacji, w której konstruktor wywołuje metodę walidującą, która tworzy kolejny obiekt `Date` i znów wywołuje walidację — co prowadziłoby do błędu przepełnienia stosu.
 
-		- bool getAvailable() const - zwraca dostępność pojazdu
 
-		- int getMileage() const - zwraca przebieg pojazdu
 
-		- FuelType getFuelType() const - zwraca rodzaj napędu/paliwa pojazdu
 
-		- Transmission getTransmission() const - zwraca rodzaj skrzyni biegów pojazdu
 
-		- Condition getCondition() const - zwraca stan pojazdu
+# PLIKI Z KLASAMI ENUM
 
-		Settery
 
-		- void setLicensePlate(string) - setter dla tablicy rejestracyjnej. ma walidację - licensePlateCheck() z utils.h
 
-		- void setBrand(string) - setter dla marki pojazdu
 
-		- void setModel(string) - setter dla modelu pojazdu
+## Plik fuelType.h/.cpp
+Plik, który zawiera enum class FuelType, która określa napęd/rodzaj paliwa pojazdu. Posiada dwie funkcje związane z jeg strukturą. 
 
-		- void setProductionDate(Date) - setter dla daty produkcji pojazdu. ma walidację - porównuje datę wpisaną z dzisiejszą.
+## `enum class FuelType`
+- `Benzyna`
+- `Diesel`
+- `Elektryczny`
+- `Hybryda`
 
-		- void setColor(string) - setter dla koloru pojazdu
+---
 
-		- void setAvailability(bool) - setter dla dostępności pojazdu
+## Funkcje związane z `FuelType`
 
-		- void setMileage(int) - setter dla przebiegu pojazdu. ma walidację - sprawdza czy wartość jest < 0 lub >1'000'000
+### `FuelType stringToFuelType(string)`
+- Przyjmuje string, formatuje go wstępnie za pomocą `enumFormat(string)` (z `utils.h`).
+- Porównuje sformatowany string z nazwami członków enuma `FuelType`.
+- Zwraca odpowiedni `FuelType`, jeśli znajdzie zgodność.
+- Rzuca wyjątek (`throw`), jeśli nie znajdzie pasującego członka.
 
-		- void setFuelType(FuelType) - setter dla rodzaju napędu/paliwa
+### `string fuelTypeToString(FuelType)`
+- Przyjmuje wartość `FuelType`.
+- Używa `switch` do zwrócenia odpowiadającego stringa dla każdej wartości enuma.
+- Rzuca wyjątek (`throw`), jeśli wartość nie pasuje do żadnego przypadku.
 
-		- void setTransmission(Transmission) - setter dla rodzaju skrzyni biegów
 
-		- void setCondition(Condition) - setter dla stanu pojazdu
 
-		Inne
+## Plik transmission.h/.cpp
+Plik, który zawiera enum class Transmission, która określa rodzaj skrzyni biegów pojazdu. Posiada dwie funkcje związane z jego strukturą.
 
-		- string getFileFormat() const - zwraca wszystkie pola w formacie gotowym do wszczepienia do pliku cars.txt.
-			TablicaRejestracyjna;Marka;Model;DataProdukcji;Kolor;Dostępność;Przebieg;RodzajNapędu;SkrzyniaBiegów;Stan
+## `enum class Transmission`
+- `Manualna`
+- `Automatyczna`
+- `PolAutomatyczna`
 
-		- static Car fromFileSring(const string&) - konwertuje string z argumentu (który jest w formacie z pliku, patrz powyżej)
-			na obiekt Car
+---
 
-		- void setCar(string, string, string, Date, string, bool, int, FuelType, Transmission, Condition) - setter dla wszystkich
-			pól klasy.
+## Funkcje związane z `Transmission`
 
-		- void show() - pokazuje wszystkie dane pojazdu
-		
-		- void smallShow() - pokazuje tylko markę, model, tablicę rejestracyjną oraz dostępność pojazdu.
+### `Transmission stringToTransmission(string)`
+- Przyjmuje string, formatuje go wstępnie za pomocą `enumFormat(string)` (z `utils.h`).
+- Porównuje sformatowany string z nazwami członków enuma `Transmission`.
+- Zwraca odpowiedni `Transmission`, jeśli znajdzie zgodność.
+- Rzuca wyjątek (`throw`), jeśli nie znajdzie pasującego członka.
 
-		- void write() - pozwala na wpisanie wartości z klawiatury. używa std::cin oraz setterów. tam gdzie jest to wymagane,
-			obsługuje błąd, gdy ktoś wpisze string do int. Jeżeli ktoś wpisze coś niepoprawnego, catch wraca do nie do głównego
-			menu, lecz do początku tej metody.
+### `string transmissionToString(Transmission)`
+- Przyjmuje wartość `Transmission`.
+- Używa `switch` do zwrócenia odpowiadającego stringa dla każdej wartości enuma.
+- Rzuca wyjątek (`throw`), jeśli wartość nie pasuje do żadnego przypadku.
 
-		- void edit(Car&) - użytwa std::getline oraz seterów aby edytować wartości przekazanego obiektu Car. waliduje input użytkownika.
-			działa na szablonie write(), więc pętla i try-catch działają tak samo. aby zostawić stare dane, użytkownik może pominąć
-			poprzez naciśnięcie enter.
 
 
+## Plik condition.h/.cpp
+Plik, który zawiera enum class Condition, która określa stan pojazdu. Posiada dwie funkcje związane z jego strukturą.
 
-												Plik dealership.h/.cpp
+## `enum class Condition`
+- `Nowy`
+- `Doskonaly`
+- `Dobry`
+- `Przecietny`
+- `Slaby`
+- `Uszkodzony`
 
+---
 
+## Funkcje związane z `Condition`
 
-	Plik, który zawiera klasę Dealership, przechowującą vector pojazdów oraz nazwę pliku, do którego zapisują się dane.
+### `Condition stringToCondition(string)`
+- Przyjmuje string, formatuje go wstępnie za pomocą `enumFormat(string)` (z `utils.h`).
+- Porównuje sformatowany string z nazwami członków enuma `Condition`.
+- Zwraca odpowiedni `Condition`, jeśli znajdzie zgodność.
+- Rzuca wyjątek (`throw`), jeśli nie znajdzie pasującego członka.
 
-	> class Dealership
+### `string conditionToString(Condition)`
+- Przyjmuje wartość `Condition`.
+- Używa `switch` do zwrócenia odpowiadającego stringa dla każdej wartości enuma.
+- Rzuca wyjątek (`throw`), jeśli wartość nie pasuje do żadnego przypadku.
 
-		private:
 
-		- vector<Car> cars
-		- const string filename = "cars.txt"
 
-		public:
-		
-		- Dealership(vector<Car>) - konstruktor podmieniający vector klasy z argumentem.
 
-		- Dealership(Car) - konstruktor dodający (push_back) argument do vectora klasy.
+# INNE
 
-		- void displayCars() - pokazuje wszystkie pojazdy z vectora klasy. jeżeli nie ma żadnych pojazdów w vektorze, powiadamia
-			o tym użytkownika. Sortuje auta po dostępności.
-	
-		- void sortedDisplayCars() - pokazuje wszystkie pojazdy z vectora klasy wraz z ich indeksami. pokazuje tylko markę, model,
-			tablicę rejestracyjną oraz dostępność pokazdu. Sortuje auta po dostępności.
 
-		- void reverseDisplayCars() - pokazuje wszystkie pojazdu z vectora klasy wraz z ich indeksami. pokazuje tylko markę, model,
-			tablicę rejestracyjną oraz dostępność pojazdu. Sortuje auta od niedostępnych do dostępnych.
 
-		- void addCar(const Car&) - dodaje (push_back) auto do vectora klasy.
+## Plik utils.h/.cpp
+Plik z funkcjami pomocniczymi i klasą Exception, która dziedziczy po std::exception
 
-		- void addCar() - tworzy obiekt car, wywołuję funkcję write(), która pozwala wpisać wartości auta, po czym wywołuje powyższą
-			metodę z wcześniej utworzonym obiektem jako argument.
+### Exception class
+- `string getMessage() const`  
+  Zwraca wiadomość z błędem.
+  
+---
 
-		- void removeCar(Car&) - korzystając z pętli, sprawdza czy getFileFormat() obiektu w argumencie zgadza się z obecnym obiektem
-			cars[index]. jeżeli się zgadza, to usuwa korzystajac z metody wektora erase(index).
+## Funkcje pomocniczne
 
-			Dlaczego getFileFormat()? 
-				Porównanie wykorzystuje akurat tą metodę, ponieważ zawiera ona najwięcej unikatowych informacji o pojeździe,
-				gdyż jest to string, w którym wartości obiektu są oddzielone średnikami.
+### `bool enumFormat(string&)`
+- Jeżeli string nie jest pusty, modyfikuje go tak, aby miał format enuma:  
+  - Pierwsza litera wielka, reszta małe.  
+- Zwraca `true` jeśli string nie był pusty, `false` jeśli był pusty.
 
-		- void removeCar() - wyświetla auta za pomocą metody sortedDisplayCars(). prosi użytkownika o wpisanie indeksu pojazdu, który
-			chce usunąć. jeżeli użytkownik nie wpisał liczby lub indeks poza rozmiarem vectora, robi throw.
-			jeżeli dobrze wpisane, wywołuje funkcje removeCar(Car&) z argumentem cars[index] (czyli obiektem Car z vectora cars,
-			który występuje na indeksie index).
-		
-		- void editCar() - wyświetla auta za pomocą metody sortedDisplayCars(). prosi użytkownika o wpisanie indeksu pojazdu, który
-			chce edytwaoć. jeżeli użytkownik nie wpisał liczby lub indeks poza rozmiarem vectora, robi throw.
-			jeżeli dobrze wpisane, wywołuje funkcję car::edit(Car&) z argumentem cars[index].
+### `void licensePlateCheck(string)`
+- Sprawdza, czy tablica rejestracyjna pasuje do wzorca:  
+  - `XX-XXXXX` lub `XXX-XXXXX`  
+- Używa `std::regex_match` z biblioteki `<regex>`.  
+- Rzuca wyjątek, jeśli nie pasuje do wzorca.
 
-		- void rentCar(Car&) - jeżeli pojazd jest dostępny (getAvailable()) to zmienia jego dostępność na false. jeżeli getAvailable()
-			zwraca false, to robi throw.
+### `Date dateCheck(string)`
+- Sprawdza, czy data pasuje do wzorca `dd.mm.yyyy` za pomocą regex.  
+- Jeśli nie pasuje, rzuca wyjątek.  
+- Jeśli pasuje, zwraca obiekt `Date` z rozdzielonych wartości stringa.
 
-		- void rentCar() - wyświetla auta za pomocą metody sortedDisplayCars(). prosi użytkownika o wpisanie indeksu pojazdu, który
-			chce wypożyczyć. jeżeli użytkownik nie wpisał liczby lub indeks poza rozmiarem vectora, robi throw.
-			jeżeli dobrze wpisane, wywołuje funkcje rentCar(Car&) z argumentem cars[index] (czyli obiektem Car z vectora cars,
-			który występuje na indeksie index).
+### `void clearTerminal()`
+- Czyści terminal.  
+- Używa `system("cls")` z `<windows.h>`.  
+- Wpisuje do konsoli polecenie `cls`, które ją czyści.
 
-		- void returnCar(Car&) - jeżeli pojazd nie jest dostępny (!getAvailable()), to zmienia jego dostępność na true. jeżeli getAvailable()
-			zwraca true, to robi throw.
+### `void wait(int)`
+- Czeka określoną ilość milisekund.  
+- Parametr: czas w ms (int).  
+- Używa `<chrono>` i `<thread>`.
 
-		- void returnCar() - wyświetla auta za pomocą metody sortedDisplayCars(). prosi użytkownika o wpisanie indeksu pojazdu, który
-			chce zwrócić. jeżeli użytkownik nie wpisał liczby lub indeks poza rozmiarem vectora, robi throw.
-			jeżeli dobrze wpisane, wywołuje funkcję returnCar(Car&) z argumentem cars[index] (czyli obiektem Car z vectora cars,
-			który występuje na indeksie index).
-		
-		- void sortCars() - sortuje pojazdy w vectorze od dostępnych do niedostępnych. używa metody sort() z biblioteki <algorithm>.
-			w parametrze przekazuje początek vectora pojazdów, jego koniec, oraz funkcję lamba, która porównuje dwa obiekty Car
-			i zwraca ten, który ma większą dostępność (a.getAvailable() > b.getAvailable()ponieważ true to 1, a false to 0).
+### `void waitAndClear(int)`
+- Najpierw czeka określony czas (`wait(int)`),  
+- Następnie czyści terminal (`clearTerminal()`).
 
-		- void fetchFromFile() - używa ifstream z biblioteki <fstream>. czyta linię z pliku, i jeżeli nie jest pusta, to dodaje (push_back)
-			linię do vectora za pomocą metody statycznej Car::fromFileString(string), która konwertuje linię w obiekt Car.
+### `void clearCin()`
+- Czyści bufor wejściowy `std::cin` po błędnym wejściu.  
+- Używa `std::cin.clear()` i `std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n')`.  
+- Korzysta z `<limits>`.
 
-		- void saveToFile() - używa ofstream z biblioteki <fstream>. iteruje po obiektach z vectora i dodaje je do pliku.
+### `bool checkIfStrEmpty(string&)`
+- Zwraca `true`, jeśli string jest pusty,  
+- Zwraca `false` w przeciwnym przypadku.
 
 
-												Plik date.h/.cpp
 
+# MAIN() - Przebieg programu i funkcje
 
-	Plik z klasą Date, która przechowuje rok, miesiąc oraz dzień. Posiada gettery i settery do poszczególnych
-	pól, jak i metodą zwracającą pełną datę oraz metodą statyczną, która zwraca obiekt o dacie dzisiejszej.
+## Działanie programu:
 
-	> Date
-		- private int year, month, day; zainicjowane na 0.
-	
-		- Date(int, int, int)
-			
-		Gettery
+- Na początku programu tworzony jest obiekt klasy `Dealership`.
+- Następnie wczytywane są dane z pliku `cars.txt`.
+- Reszta programu działa w pętli.
 
-		- int getYear() const - zwraca rok
+### Wewnątrz pętli:
 
-		- int getMonth() const - zwraca miesiąc
+- Blok `try...catch()` obsługuje błędy i powoduje powrót do ekranu głównego w przypadku wyjątku.
+- Program wyświetla opcje użytkownika za pomocą funkcji `mainMenu()`.
+- Prosi użytkownika o wybór opcji.
+- Jeśli użytkownik wpisze coś innego niż liczba, rzucany jest wyjątek (`throw`).
+- Wybór użytkownika jest przetwarzany przez funkcję `processDecision(Dealership&, int)`:
+  - `0` — pokazuje wszystkie pojazdy (`displayCars(Dealership)`)
+  - `1` — dodaje pojazd (`addCar(Dealership&)`)
+  - `2` — usuwa pojazd (`removeCar(Dealership&)`)
+  - `3` — edytuje pojazd (`editCar(Dealership&)`)
+  - `4` — wypożycza pojazd (`rentCar(Dealership&)`)
+  - `5` — zwraca pojazd (`returnCar(Dealership&)`)
+- Jeśli wpisana liczba jest poza zakresem `<0;5>`, rzucany jest wyjątek (`throw`).
 
-		- string getMonthFormatted() - zwraca miesiąc w formatowaniu, jako string - miesiąc maj jako int byłby 5, a tutaj zwraca "05".
-			korzysta z <ostringstream> aby ustawić szerokość stringa na 0, dopełnia '0' do tej szerokości.
+---
 
-		- int getDay() const - zwraca dzień
+## Funkcje:
 
-		- string getDayFormatted() -  zwraca dzień w formatowaniu, jako string - dzień jako int byłby np. 1, a tutaj zwraca "01".
-			korzysta z <ostringstream> aby ustawić szerokość stringa na 0, dopełnia '0' do tej szerokości.
+### `void mainMenu()`
+- Wyświetla użytkownikowi dostępne opcje.
 
-		- string getDate() const - zwraca datę w formatowaniu dd.mm.yyyy
+### `void displayCars(Dealership)`
+- Wywołuje `Dealership::displayCars()`.
+- Pozwala użytkownikowi wrócić do menu po naciśnięciu Enter.
 
-		- static Date today() - zwraca obiekt Date z wartościami odpowiadającymi dacie systemowej. używa biblioteki <windows.h>.
+### `void addCar(Dealership&)`
+- Wywołuje `Dealership::addCar()`.
+- Powiadamia użytkownika o dodaniu pojazdu.
+- Wraca do menu po 3 sekundach.
 
-		- static int currentYear() - zwraca int z rokiem z daty systemowej, <windows.h>
-		
-		- static int currentMonth() - zwraca int z miesiącem z daty systemowej, <windows.h>
-		
-		-static int currentDay() - zwraca int z dniem z daty systemowej, <windows.h>
+### `void removeCar(Dealership&)`
+- Wywołuje `Dealership::removeCar()`.
+- Powiadamia użytkownika o usunięciu pojazdu.
+- Wraca do menu po 3 sekundach.
 
-		Settery
+### `void rentCar(Dealership&)`
+- Wywołuje `Dealership::rentCar()`.
+- Powiadamia użytkownika o wypożyczeniu pojazdu.
+- Wraca do menu po 3 sekundach.
 
-		- void setYear(int) - setter na rok
-	
-		- void setMonth(int) - setter na miesiąc
+### `void returnCar(Dealership&)`
+- Wywołuje `Dealership::returnCar()`.
+- Powiadamia użytkownika o zwrocie pojazdu.
+- Wraca do menu po 3 sekundach.
 
-		- void setDay(int) - setter na dzień
+### `void processDecision(Dealership&, int)`
+- Przetwarza wybór użytkownika:
+  - `0` → wywołuje `displayCars(Dealership)`
+  - `1` → wywołuje `addCar(Dealership&)`
+  - `2` → wywołuje `removeCar(Dealership&)`
+  - `3` → wywołuje `editCar(Dealership&)`
+  - `4` → wywołuje `rentCar(Dealership&)`
+  - `5` → wywołuje `returnCar(Dealership&)`
+  - Inna wartość → rzuca wyjątek (`throw`)
+- Po wykonaniu akcji wywołuje `Dealership::saveToFile()` aby zapisać zmiany.
 
-		- void setDate(int, int, int) - setter dla każdej wartości
-
-		Walidacja
-
-		- static void validateDate(Date) - walidacja daty względem daty systemowej oraz pod względem liczbowym ( < 0, > 12, > 31, itp.)
-		- static void validateDate(int, int, int) - walidacja daty względem daty systemowej oraz pod względem liczbowym ( < 0, > 12, > 31, itp.)
-		(po co jest wersja z int,int,int, jeżeli w parametrze pierwszej metody można użyć konstruktora? ponieważ jest to użyte do walidowania daty
-		również w konstruktorze. więc konstruktor wywołałby metodę, która wywołuje konstruktor, który wywołuje tą metodę... i czarna dziura znana 
-		jako stack overflow error)
-
-
-
-
-													PLIKI Z KLASAMI ENUM
-
-
-
-
-												Plik fuelType.h/.cpp
-
-	
-	Plik, który zawiera enum class FuelType, która określa napęd/rodzaj paliwa pojazdu. Posiada dwie funkcje związane z jeg strukturą. 
-
-	> enum class FuelType - Benzyna, Diesel, Elektryczny, Hybryda
-
-	- FuelType stringToFuelType(string) - sprawdza, czy string w argumencie jest taki sam, jak nazwa któregokolwiek z członków enuma FuelType.
-		wstępnie formatuje stringa używając enumFormat(string) z utils.h, następnie porównuje go z każdym członkiem enuma. Jeżeli nie znajdzie
-		członków takich samych jak string, to robi throw.
-	
-	- string fuelTypeToString(FuelType) - odwrotność poprzedniej funkcji - switchuje argument, i zwraca odpowiedni string. Jeżeli nie znajdzie, to
-		robi throw.
-
-
-												Plik transmission.h/.cpp
-
-
-	
-	Plik, który zawiera enum class Transmission, która określa rodzaj skrzyni biegów pojazdu. Posiada dwie funkcje związane z jego strukturą.
-
-	> enum class Transmission - Manualna, Automatyczna, PolAutomatyczna
-
-	- Transmission stringToTransmission(string) - sprawdza, czy string w argumencie jest taki sam, jak nazwa któregokolwiek z członków enuma
-		Transmission. Wstępnie formatuje stringa używając enumFormat(string) z utils.h, następnie porównuje go z każdym członkiem enuma.
-		Jeżeli nie znajdzie członków takich samych jak string, to robi throw.
-
-	- string transmissionToString(Transmission) - odwrotność poprzedniej funkcji - switchuje argument, i zwraca odpowiedni string. Jeżeli nie znajdzie,
-		to robi throw.
-
-
-
-												Plik condition.h/.cpp
-
-
-
-
-	Plik, który zawiera enum class Condition, która określa stan pojazdu. Posiada dwie funkcje związane z jego strukturą.
-
-	> enum class Condition - Nowy, Doskonaly, Dobry, Przecietny, Slaby, Uszkodzony
-
-	- Condition stringToCondition(string) - sprawdza, czy string w argumencie jest taki sam, jak nazwa któregokolwiek z członkó enuma
-		Condition. Wstępnie formatuje stringa używając enumFormat(string) z utils.h, następnie porównuje go z każdym członkiem enuma.
-		Jeżeli nie znajdzie członków takich samych jak string, to robi throw.
-
-	- string conditionToString(Condition) - odwrotność poprzedniej funkcji - switchuje argument, i zwraca odpowiedni string. Jeżeli nie znajdzie,
-		to robi throw.
-
-
-
-														    INNE
-
-
-
-												Plik utils.h/.cpp
-
-
-	Plik z funkcjami pomocniczymi i klasą Exception, która dziedziczy po std::exception
-
-	> Exception
-		- string getMessage() const - zwraca wiadomość z błędem
-
-	- bool enumFormat(string&) - jeżeli string nie jest pusty, zwraca true i modifikuje go aby pasował do
- 		formatu, który występuje w klasach enum (FuelType, Transmission, Condition) - Wielka litera na początku,
-		reszta to litery małe. jeżeli string jest pusty, zwraca false.
-
-	- void licensePlateCheck(string) - regex (biblioteka <regex>, std::regex_match), sprawdza czy tablica
- 		rejestracyjna z parametru pasuje do paternu XX-XXXXX lub XXX-XXXXX. jeżeli nie pasuje, to robi throw.
-	
-	- Date dateCheck(string) - regex, sprawdza czy data pasuje do paternu (dd.mm.yyyy). jeżeli nie pasuje, to
-		robi throw, jeżeli pasuje to zwraca obiekt Date z rozdzielonych wartości ze stringa.
-
-	- void clearTerminal() - używa biblioteki <windows.h>, czyści terminal za pomocą system("cls"). system() 
-		system() powoduje wpisanie parametru do konsoli, a "cls" to parametr, który powoduje jej wyczyszczenie.
-		(czyli po prostu powoduje wpisanie cls do konsoli, co ją czyści.)
-	
-	- void wait(int) - parametr to ilość milisekund, ile program odczeka, przed wykonaniem dalszych czynności.
-		używa bibliotki <chrono> aby uzyskać milisekundy z int, a <thread> aby czekać. 
-	
-	- void waitAndClear(int) - wiąże razem funckje clearTerminal() i wait(int).
-
-	- void clearCin() - głównie użyte aby wyczyścić \n przed getline lub po std::cin.fail(), które dzieje się 
-		jak ktoś w std::cin wpisze niepoprawny typ danych (np. string do int). zostawione, powoduje słabe 
-		zachowanie się programu. funkcja czyści skutków std::cin z buffera, używając std::cin.clear() i 
-		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'). korzysta z biblioteki <limits>
-
-	- bool checkIfStrEmpty(string&) - jeżeli string jest pusty, zwraca true, jeżeli nie jest, to zwraca false.
-
-
-						                    MAIN()
-
-
-
-	Działanie:
-
-		Na początku programu, tworzony jest obiekt klasy Dealership. Następnie, wczytywane są dane z pliku cars.txt.
-		Reszta programu dzieje się w pętli.
-
-		Wewnątrz pętli występuje try...catch(), który po błędzie powoduje powrót do ekranu głównego.
-		
-		Program wyświetla opcje, jakie użytkownik może wpisać za pomocą funkcji mainMenu().
-		Program prosi użytkownika, aby wpisał opcję, którą chce.
-		Jeżeli użytkownik wpisze nie liczbę, program robi throw.
-
-		Następnie, program przetwarza wybór użytkownika za pomocą funkcji processDecision(Dealership&, int)
-		Jeżeli użytkownik wybrał 0, pokazuje wszystkie pojazdu za pomocą funkcji pomocniczej displayCars(Dealership)
-		Jeżeli użytkownik wybrał 1, daje mu możliwość dodania pojazdu za pomocą funkcji pomoczniczej addCar(Dealership&) 
-		Jeżeli użytkownik wybrał 2, daje mu możliwość usunięcia pojazdu za pomocą funkcji pomoczniczej deleteCar(Dealership&)
-		Jeżeli użytkownik wybrał 3, daje mu możliwość edytowania pojazdu za pomocą funkcji pomoczniczej editCar(Dealership&)
-		Jeżeli użytkownik wybrał 4, daje mu możliwość wypożyczenia pojazdu za pomocą funkcji pomoczniczej rentCar(Dealership&)
-		Jeżeli użytkownik wybrał 5, daje mu możliwość zwrotu pojazdu za pomocą funkcji pomocniczej returnCar(Dealership&)
-
-		Jeżeli użytkownik wpisał liczbę poza zakresem <1;5>, program robi throw.
-
-
-	Funkcje:
-
-
-		- void mainMenu() - pokazuje użytkownikowi, jakie opcje może wpisać.
-
-		- void displayCars(Dealership) - funkcja pomocnicza, która wywołuje Dealership::displayCars(), i pozwala wrócić do menu po naciśnięciu Enter.
-
-		- void addCar(Dealership&) - funkcja pomocnicza, która wywołuje Dealership::addCar(), oraz powiadamia użytkownika o dodaniu i powraca do menu
-			 po 3 sekundach od dodania.
-
-		- void removeCar(Dealership&) - funkcja pomocnicza, która wywołuje Dealership::removeCar(), oraz powiadamia użytkownika o usunięciu i powraca
-			do menu po 3 sekundach od usunięcia.
-
-		- void rentCar(Dealership&) - funkcja pomocnicza, która wywołuje Dealership::rentCar(), oraz powiadamia użytkownika o wypożyczeniu i powraca
-			do menu po 3 sekundach od wypożyczenia.
-
-		- void returnCar(Dealership&) - funkcja pomocnicza, która wywołuje Dealership::returnCar(), oraz powiadamia użytkownika o zwrocie i powraca
-			do menu po 3 sekundach od zwrotu.
-
-		- void processDecision(Dealership&, int) - funkcja, która przetwarza wybór użytkownika. switchuje int z argumentu, jeżeli 0 to wywołuje funkcję
-			displayCars(Dealership), jeżeli 1 to wywołuje funkcję addCar(Dealership&), jeżeli 2 to wywołuje funkcję removeCar(Dealership&), jeżeli
-			3 to wywołuje funkcję removeCar(Dealership&), jeżeli 4 to wywołuje funkcję returnCar(Dealership&). Jeżeli otrzymał inną cyfrę, to robi
-			throw. Po wykonaniu całej logiki, wywołuje Dealership::saveToFile() aby zapisać zmiany.
-			
