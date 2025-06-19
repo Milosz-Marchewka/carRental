@@ -32,7 +32,8 @@ w języku angielskim.
 											
 Projekt jest oryginalnie stworzony w Code::Blocks. 
 Jednakże, nie załączam tutaj plików .cbp itp.
-Zalecane jest otworzenie w VS22 lub VSCode (g++)
+Zalecam otwarcie projektu w Visual Studio 2022
+lub Visual Studio Code (z kompilatorem g++)
 
 ----------------------------------------------------------
 # Pseudo-dokumentacja
