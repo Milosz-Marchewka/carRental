@@ -109,7 +109,7 @@ Plik, który zawiera klasę Car, przechowującą dane i metody powiązane z poje
 
 - `void smallShow()` – pokazuje tylko markę, model, tablicę rejestracyjną oraz dostępność
 
-- `void write()` – pozwala na wpisywanie wartości z klawiatury przy pomocy `std::cin` i setterów.  
+- `void write()` – pozwala na wpisywanie wartości z klawiatury przy pomocy `std::getline` i setterów.  
   Obsługuje wyjątki przy błędnych danych. W razie błędu wraca na początek metody, a nie do głównego menu.
 
 - `void edit(Car&)` – używa `std::getline` i setterów do edycji danych przekazanego obiektu.  
