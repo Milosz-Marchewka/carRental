@@ -5,6 +5,8 @@
 ### z najlepszymi praktykami, optymalnie lub przystępnie. Celem było stworzenie projektu
 ### opierającego się o OOP, obsługę plików i wyjątków oraz podstawowe CLI.
 
+
+
 Program jest salonem samochodowym.
 Przechowuje on wszystkie zmiany w pliku cars.txt
 Sam program działa po Polsku, tyle że kod jest napisany
