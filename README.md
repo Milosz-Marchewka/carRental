@@ -1,7 +1,7 @@
 # Salon Samochodowy - projekt szkolny
 
 ### DISCLAIMER: To jest projekt szkolny. Został stworzony w 2-3 dni, czas pracy  
-### około 5h. Zapewne nie wszystko co znajduje się w tym projekcie jest zrobione  
+### około 7h. Zapewne nie wszystko co znajduje się w tym projekcie jest zrobione  
 ### z najlepszymi praktykami, optymalnie lub przystępnie. Celem było stworzenie projektu  
 ### opierającego się o OOP, obsługę plików i wyjątków oraz podstawowe CLI.
 
